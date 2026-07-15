@@ -63,6 +63,16 @@ public class Grupo {
 	public List<Usuario> getUsuarios() {
 		return usuarios;
 	}
+
+	/**
+	 * @param usuarios the usuarios to set
+	 */
+	public void setUsuarios(List<Usuario> usuarios) {
+		this.usuarios.clear();
+		if (usuarios != null) {
+			this.usuarios.addAll(usuarios);
+		}
+	}
 	
 	/**
 	 * 
