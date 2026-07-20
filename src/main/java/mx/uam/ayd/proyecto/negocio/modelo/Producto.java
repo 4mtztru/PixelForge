@@ -1,18 +1,15 @@
 package mx.uam.ayd.proyecto.negocio.modelo;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Producto {
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long idProducto;
+	private String sku;
 
 	private String codigoBarras;
 
@@ -24,18 +21,15 @@ public class Producto {
 
 	private int stockMinimo;
 
-	private String estadoStock;
+	@Enumerated(EnumType.STRING)
+	private EstadoStock estadoStock;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "idCategoria")
-	private Categoria categoria;
-
-	public long getIdProducto() {
-		return idProducto;
+	public String getSku() {
+		return sku;
 	}
 
-	public void setIdProducto(long idProducto) {
-		this.idProducto = idProducto;
+	public void setSku(String sku) {
+		this.sku = sku;
 	}
 
 	public String getCodigoBarras() {
@@ -78,43 +72,11 @@ public class Producto {
 		this.stockMinimo = stockMinimo;
 	}
 
-	public String getEstadoStock() {
+	public EstadoStock getEstadoStock() {
 		return estadoStock;
 	}
 
-	public void setEstadoStock(String estadoStock) {
+	public void setEstadoStock(EstadoStock estadoStock) {
 		this.estadoStock = estadoStock;
-	}
-
-	public Categoria getCategoria() {
-		return categoria;
-	}
-
-	public void setCategoria(Categoria categoria) {
-		this.categoria = categoria;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Producto other = (Producto) obj;
-		return idProducto == other.idProducto;
-	}
-
-	@Override
-	public int hashCode() {
-		return (int) (31 * idProducto);
-	}
-
-	@Override
-	public String toString() {
-		return "Producto [idProducto=" + idProducto + ", codigoBarras=" + codigoBarras
-			+ ", nombre=" + nombre + ", precio=" + precio + ", stockActual=" + stockActual
-			+ ", stockMinimo=" + stockMinimo + ", estadoStock=" + estadoStock + "]";
 	}
 }

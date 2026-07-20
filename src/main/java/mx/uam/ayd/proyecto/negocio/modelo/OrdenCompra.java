@@ -1,43 +1,28 @@
 package mx.uam.ayd.proyecto.negocio.modelo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
 
 @Entity
 public class OrdenCompra {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long idOrdenCompra;
 
+	@Id
 	private String folio;
 
 	private LocalDate fechaEmision;
 
 	private LocalDate fechaEntrega;
 
-	private String estado;
+	@Enumerated(EnumType.STRING)
+	private EstadoOrden estado;
 
 	private double montoTotal;
 
 	private double anticipoPagado;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "idProveedor")
-	private Proveedor proveedor;
-
-	public long getIdOrdenCompra() {
-		return idOrdenCompra;
-	}
-
-	public void setIdOrdenCompra(long idOrdenCompra) {
-		this.idOrdenCompra = idOrdenCompra;
-	}
 
 	public String getFolio() {
 		return folio;
@@ -63,11 +48,11 @@ public class OrdenCompra {
 		this.fechaEntrega = fechaEntrega;
 	}
 
-	public String getEstado() {
+	public EstadoOrden getEstado() {
 		return estado;
 	}
 
-	public void setEstado(String estado) {
+	public void setEstado(EstadoOrden estado) {
 		this.estado = estado;
 	}
 
@@ -85,38 +70,5 @@ public class OrdenCompra {
 
 	public void setAnticipoPagado(double anticipoPagado) {
 		this.anticipoPagado = anticipoPagado;
-	}
-
-	public Proveedor getProveedor() {
-		return proveedor;
-	}
-
-	public void setProveedor(Proveedor proveedor) {
-		this.proveedor = proveedor;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		OrdenCompra other = (OrdenCompra) obj;
-		return idOrdenCompra == other.idOrdenCompra;
-	}
-
-	@Override
-	public int hashCode() {
-		return (int) (31 * idOrdenCompra);
-	}
-
-	@Override
-	public String toString() {
-		return "OrdenCompra [idOrdenCompra=" + idOrdenCompra + ", folio=" + folio
-			+ ", fechaEmision=" + fechaEmision + ", fechaEntrega=" + fechaEntrega + ", estado="
-			+ estado + ", montoTotal=" + montoTotal + ", anticipoPagado=" + anticipoPagado
-			+ "]";
 	}
 }

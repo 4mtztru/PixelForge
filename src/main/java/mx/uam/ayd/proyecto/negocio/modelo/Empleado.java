@@ -1,27 +1,30 @@
 package mx.uam.ayd.proyecto.negocio.modelo;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Categoria {
+public class Empleado {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int idCategoria;
+	private int idEmpleado;
 
 	private String nombre;
 
-	private String descripcion;
+	@Enumerated(EnumType.STRING)
+	private RolEmpleado rol;
 
-	public int getIdCategoria() {
-		return idCategoria;
+	public int getIdEmpleado() {
+		return idEmpleado;
 	}
 
-	public void setIdCategoria(int idCategoria) {
-		this.idCategoria = idCategoria;
+	public void setIdEmpleado(int idEmpleado) {
+		this.idEmpleado = idEmpleado;
 	}
 
 	public String getNombre() {
@@ -32,11 +35,11 @@ public class Categoria {
 		this.nombre = nombre;
 	}
 
-	public String getDescripcion() {
-		return descripcion;
+	public RolEmpleado getRol() {
+		return rol;
 	}
 
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public void setRol(RolEmpleado rol) {
+		this.rol = rol;
 	}
 }
