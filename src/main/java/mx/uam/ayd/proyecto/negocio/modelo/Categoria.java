@@ -1,9 +1,15 @@
 package mx.uam.ayd.proyecto.negocio.modelo;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Categoria {
@@ -38,5 +44,16 @@ public class Categoria {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	@OneToMany(targetEntity = Producto.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "categoria")
+	private List<Producto> productos = new ArrayList<>();
+
+	public List<Producto> getProductos() {
+		return productos;
+	}
+
+	public void setProductos(List<Producto> productos) {
+		this.productos = productos;
 	}
 }

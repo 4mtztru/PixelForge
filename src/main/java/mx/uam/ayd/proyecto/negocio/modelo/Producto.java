@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Producto {
@@ -78,5 +80,17 @@ public class Producto {
 
 	public void setEstadoStock(EstadoStock estadoStock) {
 		this.estadoStock = estadoStock;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "idCategoria")
+	private Categoria categoria;
+
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}
 }
