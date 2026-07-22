@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="650.0" prefWidth="1180.0" styleClass="inventario-raiz"
+            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    <left>
+        <VBox prefWidth="190.0" spacing="14.0" styleClass="barra-lateral">
+            <padding>
+                <Insets bottom="20.0" left="16.0" right="16.0" top="22.0" />
+            </padding>
+            <Label styleClass="marca-aplicacion" text="PixelForge" />
+            <Label styleClass="seccion-menu" text="OPERACIONES" />
+            <Button disable="true" maxWidth="1.7976931348623157E308"
+                    styleClass="menu-activo" text="Inventario" />
+            <Region VBox.vgrow="ALWAYS" />
+            <Label styleClass="pie-menu" text="HU-01 - Consulta de productos" wrapText="true" />
+        </VBox>
+    </left>
+    <top>
+        <VBox spacing="14.0" styleClass="cabecera-inventario">
+            <padding>
+                <Insets bottom="18.0" left="24.0" right="24.0" top="20.0" />
+            </padding>
+            <HBox alignment="CENTER_LEFT" spacing="12.0">
+                <VBox spacing="2.0">
+                    <Label styleClass="titulo-inventario" text="Inventario de Productos" />
+                    <Label styleClass="subtitulo-inventario"
+                           text="Consulte existencias por nombre, SKU o código de barras." />
+                </VBox>
+                <Region HBox.hgrow="ALWAYS" />
+                <Button onAction="#handleLimpiar" styleClass="boton-secundario" text="Limpiar búsqueda" />
+                <Button onAction="#handleCerrar" styleClass="boton-cerrar" text="Cerrar" />
+            </HBox>
+            <Separator />
+            <HBox spacing="12.0">
+                <TextField fx:id="campoNombre" onAction="#handleBuscar" promptText="Nombre del producto"
+                           HBox.hgrow="ALWAYS" />
+                <TextField fx:id="campoSku" onAction="#handleBuscar" promptText="SKU"
+                           HBox.hgrow="ALWAYS" />
+                <TextField fx:id="campoCodigoBarras" onAction="#handleBuscar" promptText="Código de barras"
+                           HBox.hgrow="ALWAYS" />
+            </HBox>
+            <Label styleClass="ayuda-busqueda" text="Complete un solo campo y presione Enter para buscar." />
+        </VBox>
+    </top>
+    <center>
+        <VBox spacing="12.0">
+            <padding>
+                <Insets bottom="24.0" left="24.0" right="24.0" top="18.0" />
+            </padding>
+            <Label fx:id="etiquetaMensaje" maxWidth="1.7976931348623157E308" minHeight="48.0"
+                   styleClass="mensaje-resultado" wrapText="true" />
+            <TableView fx:id="tablaProductos">
+                <placeholder>
+                    <Label text="" />
+                </placeholder>
+                <columns>
+                    <TableColumn fx:id="columnaCodigo" prefWidth="145.0" text="CÓDIGO / SKU" />
+                    <TableColumn fx:id="columnaProducto" prefWidth="255.0" text="PRODUCTO" />
+                    <TableColumn fx:id="columnaCategoria" prefWidth="175.0" text="CATEGORÍA" />
+                    <TableColumn fx:id="columnaStock" prefWidth="180.0" text="STOCK" />
+                    <TableColumn fx:id="columnaPrecio" prefWidth="150.0" text="PRECIO" />
+                </columns>
+                <VBox.vgrow>
+                    <Priority fx:constant="ALWAYS" />
+                </VBox.vgrow>
+            </TableView>
+        </VBox>
+    </center>
+</BorderPane>

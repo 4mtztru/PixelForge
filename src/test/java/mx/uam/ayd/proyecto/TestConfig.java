@@ -6,12 +6,8 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import mx.uam.ayd.proyecto.datos.GrupoRepository;
-import mx.uam.ayd.proyecto.datos.UsuarioRepository;
-import mx.uam.ayd.proyecto.presentacion.agregarUsuario.VentanaAgregarUsuario;
-import mx.uam.ayd.proyecto.presentacion.listarGrupos.VentanaListarGrupos;
 import mx.uam.ayd.proyecto.presentacion.listarUsuarios.VentanaListarUsuarios;
-import mx.uam.ayd.proyecto.presentacion.principal.VentanaPrincipal;
+import mx.uam.ayd.proyecto.presentacion.inventario.VistaInventario;
 
 @TestConfiguration
 @Profile("test")
@@ -20,14 +16,8 @@ public class TestConfig {
 
     @Bean
     @Primary
-    public VentanaPrincipal ventanaPrincipal() {
-        return new VentanaPrincipal();
-    }
-
-    @Bean
-    @Primary
-    public VentanaAgregarUsuario ventanaAgregarUsuario() {
-        return new VentanaAgregarUsuario();
+    public VistaInventario vistaInventario() {
+        return new VistaInventario();
     }
 
     @Bean
@@ -36,9 +26,4 @@ public class TestConfig {
         return new VentanaListarUsuarios();
     }
 
-    @Bean
-    @Primary
-    public VentanaListarGrupos ventanaListarGrupos() {
-        return new VentanaListarGrupos();
-    }
-} 
+}

@@ -1,6 +1,6 @@
 # Proyecto Análisis y Diseño
 
-Este proyecto es una aplicación JavaFX con Spring Boot que implementa un sistema de gestión de usuarios y grupos. Es un proyecto para el curso de Analisis y Diseño.
+Este proyecto es una aplicación JavaFX con Spring Boot para el curso de Analisis y Diseño.
 
 ## Tecnologías Utilizadas
 
@@ -67,9 +67,7 @@ src/
 
 ## Funcionalidades
 
-- **Agregar Usuario**: Crear nuevos usuarios en el sistema
 - **Listar Usuarios**: Ver todos los usuarios registrados
-- **Listar Grupos**: Ver todos los grupos disponibles
 
 ## Ejecutar Pruebas
 

@@ -31,16 +31,10 @@ public class VentanaListarUsuarios {
 	private TableView<Usuario> tableUsuarios;
 	
 	@FXML
-	private TableColumn<Usuario, Long> idColumn;
+	private TableColumn<Usuario, Integer> idColumn;
 	
 	@FXML
 	private TableColumn<Usuario, String> nombreColumn;
-	
-	@FXML
-	private TableColumn<Usuario, String> apellidoColumn;
-	
-	@FXML
-	private TableColumn<Usuario, Integer> edadColumn;
 	
 	private ControlListarUsuarios control;
 	private boolean initialized = false;
@@ -79,8 +73,6 @@ public class VentanaListarUsuarios {
 			// Configure columns after FXML is loaded
 			idColumn.setCellValueFactory(new PropertyValueFactory<>("idUsuario"));
 			nombreColumn.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-			apellidoColumn.setCellValueFactory(new PropertyValueFactory<>("apellido"));
-			edadColumn.setCellValueFactory(new PropertyValueFactory<>("edad"));
 			
 			initialized = true;
 		} catch (IOException e) {

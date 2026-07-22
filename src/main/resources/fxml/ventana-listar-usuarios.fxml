@@ -17,8 +17,6 @@
             <columns>
                 <TableColumn text="ID" fx:id="idColumn"/>
                 <TableColumn text="Nombre" fx:id="nombreColumn"/>
-                <TableColumn text="Apellido" fx:id="apellidoColumn"/>
-                <TableColumn text="Edad" fx:id="edadColumn"/>
             </columns>
         </TableView>
     </center>
@@ -30,4 +28,4 @@
         </VBox>
     </bottom>
     
-</BorderPane> 
+</BorderPane>

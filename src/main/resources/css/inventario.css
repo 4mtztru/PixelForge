@@ -1,0 +1,105 @@
+.inventario-raiz {
+    -fx-background-color: #f5f8fa;
+    -fx-font-family: "System";
+}
+
+.barra-lateral {
+    -fx-background-color: #dcebf3;
+    -fx-border-color: transparent #b8ccd7 transparent transparent;
+}
+
+.marca-aplicacion {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #102f3f;
+    -fx-padding: 0 0 18px 0;
+}
+
+.seccion-menu,
+.pie-menu {
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #617d8b;
+}
+
+.menu-activo,
+.menu-activo:disabled {
+    -fx-background-color: #f06423;
+    -fx-background-radius: 3px;
+    -fx-opacity: 1;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-alignment: center-left;
+    -fx-padding: 11px 14px;
+}
+
+.cabecera-inventario {
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent #d8e2e8 transparent;
+}
+
+.titulo-inventario {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #172b36;
+}
+
+.subtitulo-inventario,
+.ayuda-busqueda {
+    -fx-text-fill: #52606d;
+}
+
+.text-field {
+    -fx-background-color: white;
+    -fx-border-color: #9fb3c0;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+    -fx-padding: 9px 11px;
+}
+
+.text-field:focused {
+    -fx-border-color: #0b6fa4;
+    -fx-effect: dropshadow(gaussian, rgba(11, 111, 164, 0.18), 6, 0, 0, 0);
+}
+
+.boton-secundario,
+.boton-cerrar {
+    -fx-background-color: white;
+    -fx-border-color: #0b6fa4;
+    -fx-text-fill: #075985;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 14px;
+}
+
+.boton-cerrar {
+    -fx-border-color: #9fb3c0;
+    -fx-text-fill: #334e5c;
+}
+
+.mensaje-resultado {
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-padding: 12px 14px;
+    -fx-font-weight: bold;
+}
+
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #bac8d1;
+}
+
+.table-view .column-header-background,
+.table-view .column-header {
+    -fx-background-color: #20343e;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell {
+    -fx-cell-size: 46px;
+    -fx-border-color: transparent transparent #e4ebef transparent;
+}
