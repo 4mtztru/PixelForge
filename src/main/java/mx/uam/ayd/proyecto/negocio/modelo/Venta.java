@@ -1,4 +1,4 @@
-package mx.uam.ayd.proyecto.modelo;
+package mx.uam.ayd.proyecto.negocio.modelo;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,6 +29,9 @@ public class Venta {
 
     public String getReferenciaTransferencia() { return referenciaTransferencia; }
     public void setReferenciaTransferencia(String referenciaTransferencia) { this.referenciaTransferencia = referenciaTransferencia; }
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public boolean isProductosEnCarrito() { return productosEnCarrito; }
     public void setProductosEnCarrito(boolean productosEnCarrito) { this.productosEnCarrito = productosEnCarrito; }

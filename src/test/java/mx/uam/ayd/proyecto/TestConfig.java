@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import mx.uam.ayd.proyecto.presentacion.listarUsuarios.VentanaListarUsuarios;
 import mx.uam.ayd.proyecto.presentacion.inventario.VistaInventario;
 
 @TestConfiguration
@@ -18,12 +17,6 @@ public class TestConfig {
     @Primary
     public VistaInventario vistaInventario() {
         return new VistaInventario();
-    }
-
-    @Bean
-    @Primary
-    public VentanaListarUsuarios ventanaListarUsuarios() {
-        return new VentanaListarUsuarios();
     }
 
 }

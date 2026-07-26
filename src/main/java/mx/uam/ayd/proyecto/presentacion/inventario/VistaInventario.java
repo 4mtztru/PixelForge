@@ -1,17 +1,19 @@
 package mx.uam.ayd.proyecto.presentacion.inventario;
 
-import java.io.IOException;
-
 import org.springframework.stereotype.Component;
 
 import javafx.application.Platform;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
- * Vista desde la que el empleado inicia la consulta del inventario.
+ * Vista principal de navegación estilo estándar JavaFX.
  */
 @Component
 public class VistaInventario {
@@ -24,9 +26,6 @@ public class VistaInventario {
 		this.controlInventario = controlInventario;
 	}
 
-	/**
-	 * Muestra la vista inicial del inventario.
-	 */
 	public void mostrarInventario() {
 		if (!Platform.isFxApplicationThread()) {
 			Platform.runLater(this::mostrarInventario);
@@ -34,8 +33,10 @@ public class VistaInventario {
 		}
 
 		inicializarInterfaz();
-		stage.show();
-		stage.toFront();
+		if (stage != null) {
+			stage.show();
+			stage.toFront();
+		}
 	}
 
 	private void inicializarInterfaz() {
@@ -43,31 +44,66 @@ public class VistaInventario {
 			return;
 		}
 
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/vista-inventario.fxml"));
-			loader.setController(this);
-			Scene scene = new Scene(loader.load(), 450, 360);
+		stage = new Stage();
+		stage.setTitle("PixelForge");
 
-			stage = new Stage();
-			stage.setTitle("PixelForge");
-			stage.setScene(scene);
-			initialized = true;
-		} catch (IOException ex) {
-			throw new IllegalStateException("No fue posible cargar la vista del inventario", ex);
-		}
+		VBox root = new VBox(10);
+		root.setPadding(new Insets(15));
+		root.setAlignment(Pos.TOP_LEFT);
+
+		Label titulo = new Label("PixelForge");
+		titulo.setStyle("-fx-font-size: 22px; -fx-font-weight: bold;");
+
+		Label subtitulo = new Label("Control de inventario");
+		subtitulo.setStyle("-fx-text-fill: #52606d;");
+
+		Button btnInventario = new Button("Inventario");
+		btnInventario.setPrefWidth(220);
+		btnInventario.setPrefHeight(38);
+		btnInventario.setStyle("-fx-font-weight: bold;");
+		btnInventario.setOnAction(e -> handleInventario());
+
+		Button btnRegistrar = new Button("Registrar Producto");
+		btnRegistrar.setPrefWidth(220);
+		btnRegistrar.setPrefHeight(38);
+		btnRegistrar.setStyle("-fx-font-weight: bold;");
+		btnRegistrar.setOnAction(e -> handleRegistrarProducto());
+
+		Button btnPuntoVenta = new Button("Punto de Venta");
+		btnPuntoVenta.setPrefWidth(220);
+		btnPuntoVenta.setPrefHeight(38);
+		btnPuntoVenta.setStyle("-fx-font-weight: bold;");
+		btnPuntoVenta.setOnAction(e -> handlePuntoVenta());
+
+		root.getChildren().addAll(
+			titulo, 
+			subtitulo, 
+			new Separator(),
+			btnInventario, 
+			btnRegistrar, 
+			btnPuntoVenta
+		);
+
+		Scene scene = new Scene(root, 360, 260);
+		stage.setScene(scene);
+		initialized = true;
 	}
 
-	@FXML
 	private void handleInventario() {
 		if (controlInventario != null) {
 			controlInventario.solicitarProductos();
 		}
 	}
 
-	@FXML
-	private void handleListarUsuarios() {
+	private void handleRegistrarProducto() {
 		if (controlInventario != null) {
-			controlInventario.listarUsuarios();
+			controlInventario.solicitarRegistrarProducto();
+		}
+	}
+
+	private void handlePuntoVenta() {
+		if (controlInventario != null) {
+			controlInventario.solicitarPuntoVenta();
 		}
 	}
 }

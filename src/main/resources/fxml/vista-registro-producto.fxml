@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      spacing="12" style="-fx-padding: 20px; -fx-background-color: #f8fafc;" prefWidth="500">
+
+    <Label text="Registrar Nuevo Producto" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #1e293b;"/>
+    <Label text="Ingrese la información del producto para añadirlo al inventario" style="-fx-text-fill: #64748b;"/>
+
+    <Label fx:id="etiquetaMensaje" wrapText="true" visible="false" managed="false" 
+           style="-fx-padding: 10px; -fx-background-radius: 6px; -fx-font-weight: bold;"/>
+
+    <GridPane hgap="10" vgap="10">
+        <columnConstraints>
+            <ColumnConstraints minWidth="130" prefWidth="140"/>
+            <ColumnConstraints hgrow="ALWAYS"/>
+        </columnConstraints>
+
+        <!-- Categoría -->
+        <Label text="Categoría:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
+        <ComboBox fx:id="comboCategoria" promptText="Seleccione categoría" prefWidth="300" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <!-- Proveedor -->
+        <Label text="Proveedor:" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
+        <ComboBox fx:id="comboProveedor" promptText="Seleccione proveedor" prefWidth="300" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <!-- Nombre -->
+        <Label text="Nombre del producto:" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
+        <TextField fx:id="campoNombre" promptText="Ej. Martillo de Uña 16 oz" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+        <!-- Precio Compra -->
+        <Label text="Precio Compra ($):" GridPane.rowIndex="3" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
+        <TextField fx:id="campoPrecioCompra" promptText="0.00" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+        <!-- Precio Venta -->
+        <Label text="Precio Venta ($):" GridPane.rowIndex="4" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
+        <TextField fx:id="campoPrecioVenta" promptText="0.00" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+        <!-- Stock Inicial -->
+        <Label text="Stock Inicial:" GridPane.rowIndex="5" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
+        <TextField fx:id="campoStockInicial" promptText="10" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+        <!-- Stock Mínimo -->
+        <Label text="Stock Mínimo:" GridPane.rowIndex="6" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
+        <TextField fx:id="campoStockMinimo" promptText="5" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+
+        <!-- Código Generado -->
+        <Label text="Código Asignado:" GridPane.rowIndex="7" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
+        <HBox spacing="8" GridPane.rowIndex="7" GridPane.columnIndex="1">
+            <TextField fx:id="campoCodigo" editable="false" promptText="Presione Generar" HBox.hgrow="ALWAYS"/>
+            <Button text="Generar Código" onAction="#handleGenerarCodigo" style="-fx-background-color: #0284c7; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        </HBox>
+    </GridPane>
+
+    <Separator/>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Cancelar" onAction="#handleCancelar" style="-fx-padding: 8 16;"/>
+        <Button text="Guardar Producto" onAction="#handleGuardar" style="-fx-background-color: #16a34a; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 16;"/>
+    </HBox>
+</VBox>

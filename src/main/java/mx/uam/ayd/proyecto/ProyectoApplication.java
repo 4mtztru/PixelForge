@@ -32,15 +32,18 @@ public class ProyectoApplication {
 	private final CategoriaRepository categoriaRepository;
 	private final RepositorioProductos repositorioProductos;
 	private final ServicioProductos servicioProductos;
+	private final mx.uam.ayd.proyecto.datos.ProveedorRepository proveedorRepository;
 	
 	@Autowired
 	public ProyectoApplication(ControlInventario controlInventario, CategoriaRepository categoriaRepository,
 			RepositorioProductos repositorioProductos,
-			ServicioProductos servicioProductos) {
+			ServicioProductos servicioProductos,
+			mx.uam.ayd.proyecto.datos.ProveedorRepository proveedorRepository) {
 		this.controlInventario = controlInventario;
 		this.categoriaRepository = categoriaRepository;
 		this.repositorioProductos = repositorioProductos;
 		this.servicioProductos = servicioProductos;
+		this.proveedorRepository = proveedorRepository;
 	}
 
 	/**
@@ -100,7 +103,25 @@ public class ProyectoApplication {
 	 * Inicializa la BD con datos
 	 */
 	public void inicializaBD() {
+		inicializaProveedores();
 		inicializaProductos();
+	}
+
+	private void inicializaProveedores() {
+		if (proveedorRepository.count() > 0) {
+			return;
+		}
+		mx.uam.ayd.proyecto.negocio.modelo.Proveedor p1 = new mx.uam.ayd.proyecto.negocio.modelo.Proveedor();
+		p1.setRazonSocial("Herramientas Truper S.A. de C.V.");
+		p1.setRfc("TRU850101XYZ");
+		p1.setContacto("ventas@truper.com");
+		proveedorRepository.save(p1);
+
+		mx.uam.ayd.proyecto.negocio.modelo.Proveedor p2 = new mx.uam.ayd.proyecto.negocio.modelo.Proveedor();
+		p2.setRazonSocial("Plomería y Conexiones Global S.A.");
+		p2.setRfc("PCG920415ABC");
+		p2.setContacto("contacto@plomeria.com");
+		proveedorRepository.save(p2);
 	}
 
 	private void inicializaProductos() {
