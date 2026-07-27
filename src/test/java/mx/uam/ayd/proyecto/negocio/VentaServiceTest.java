@@ -1,9 +1,14 @@
 package mx.uam.ayd.proyecto.negocio;
 
 import mx.uam.ayd.proyecto.negocio.modelo.Venta;
+import mx.uam.ayd.proyecto.negocio.modelo.Producto;
+import mx.uam.ayd.proyecto.datos.RepositorioProductos;
+import mx.uam.ayd.proyecto.datos.VentaRepository;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 public class VentaServiceTest {
@@ -72,5 +77,48 @@ public class VentaServiceTest {
         venta.setMontoRecibido(150.00);
 
         assertTrue(ventaService.procesarPago(venta));
+    }
+
+    @Test
+    public void testRechazaMetodoDesconocido() {
+        Venta venta = new Venta();
+        venta.setProductosEnCarrito(true);
+        venta.setMetodoPago("CHEQUE");
+
+        assertThrows(IllegalArgumentException.class, () -> ventaService.procesarPago(venta));
+    }
+
+    @Test
+    public void testRegistrarVentaActualizaInventario() {
+        VentaRepository ventaRepository = mock(VentaRepository.class);
+        RepositorioProductos productosRepository = mock(RepositorioProductos.class);
+        ServicioProductos servicioProductos = mock(ServicioProductos.class);
+        VentaService servicio = new VentaService(
+                ventaRepository, productosRepository, servicioProductos);
+        Venta venta = new Venta();
+        Producto producto = new Producto();
+        producto.setStockActual(3);
+        producto.setStockMinimo(1);
+        when(ventaRepository.save(venta)).thenReturn(venta);
+
+        servicio.registrarVenta(venta, Arrays.asList(producto, producto));
+
+        assertEquals(1, producto.getStockActual());
+        verify(ventaRepository).save(venta);
+        verify(productosRepository).save(producto);
+    }
+
+    @Test
+    public void testRegistrarVentaRechazaCantidadMayorAlStock() {
+        VentaService servicio = new VentaService(
+                mock(VentaRepository.class),
+                mock(RepositorioProductos.class),
+                mock(ServicioProductos.class));
+        Producto producto = new Producto();
+        producto.setStockActual(1);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> servicio.registrarVenta(
+                        new Venta(), Arrays.asList(producto, producto)));
     }
 }

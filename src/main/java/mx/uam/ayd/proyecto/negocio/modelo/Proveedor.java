@@ -1,16 +1,26 @@
 package mx.uam.ayd.proyecto.negocio.modelo;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
+/**
+ * Entidad que representa a un Proveedor de mercancía en el sistema.
+ * Contiene información legal (Razón Social, RFC), contacto y sus órdenes de compra asociadas.
+ */
 @Entity
 public class Proveedor {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int idProveedor;
+	private long idProveedor;
 
 	private String razonSocial;
 
@@ -18,11 +28,14 @@ public class Proveedor {
 
 	private String contacto;
 
-	public int getIdProveedor() {
+	@OneToMany(targetEntity = OrdenCompra.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "proveedor")
+	private List<OrdenCompra> ordenesCompra = new ArrayList<>();
+
+	public long getIdProveedor() {
 		return idProveedor;
 	}
 
-	public void setIdProveedor(int idProveedor) {
+	public void setIdProveedor(long idProveedor) {
 		this.idProveedor = idProveedor;
 	}
 
@@ -49,5 +62,12 @@ public class Proveedor {
 	public void setContacto(String contacto) {
 		this.contacto = contacto;
 	}
-}
 
+	public List<OrdenCompra> getOrdenesCompra() {
+		return ordenesCompra;
+	}
+
+	public void setOrdenesCompra(List<OrdenCompra> ordenesCompra) {
+		this.ordenesCompra = ordenesCompra;
+	}
+}

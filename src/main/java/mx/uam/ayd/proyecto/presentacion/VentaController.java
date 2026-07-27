@@ -39,7 +39,7 @@ import mx.uam.ayd.proyecto.negocio.modelo.Producto;
 import mx.uam.ayd.proyecto.negocio.modelo.Venta;
 
 /**
- * Controlador y Vista JavaFX sencilla para el Punto de Venta (HU-03).
+ * Controlador y vista JavaFX para el punto de venta (HU-09).
  */
 @Component
 public class VentaController {
@@ -279,6 +279,13 @@ public class VentaController {
 
         if (seleccionado.getStockActual() <= 0) {
             mostrarMensaje("Producto sin stock disponible.", "-fx-text-fill: red;");
+            return;
+        }
+        long unidadesEnCarrito = productosEnCarrito.stream()
+                .filter(producto -> producto.getIdProducto() == seleccionado.getIdProducto())
+                .count();
+        if (unidadesEnCarrito >= seleccionado.getStockActual()) {
+            mostrarMensaje("No hay más unidades disponibles de este producto.", "-fx-text-fill: red;");
             return;
         }
 

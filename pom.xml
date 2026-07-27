@@ -35,19 +35,6 @@
 			<scope>runtime</scope>
 		</dependency>
 		
-		<!-- Lombok -->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
-
-		<!-- Servidor Web -->
-		<dependency>
-      		<groupId>org.springframework.boot</groupId>
-      		<artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-		
 		<!-- JavaFX -->
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -77,25 +64,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- TestFX for JavaFX testing -->
-		<dependency>
-			<groupId>org.testfx</groupId>
-			<artifactId>testfx-junit5</artifactId>
-			<version>4.0.17</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.testfx</groupId>
-			<artifactId>openjfx-monocle</artifactId>
-			<version>jdk-12.0.1+2</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.testfx</groupId>
-			<artifactId>testfx-core</artifactId>
-			<version>4.0.17</version>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -103,14 +71,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
 			</plugin>
 			<plugin>
                 <groupId>org.openjfx</groupId>

@@ -4,51 +4,77 @@ import jakarta.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import mx.uam.ayd.proyecto.presentacion.VentaController;
-import mx.uam.ayd.proyecto.presentacion.productos.ControlProductos;
+import mx.uam.ayd.proyecto.presentacion.buscarProducto.ControlBuscarProducto;
+import mx.uam.ayd.proyecto.presentacion.conciliar.ControlConciliar;
 import mx.uam.ayd.proyecto.presentacion.productos.ControlRegistroProducto;
 
 /**
- * Controla el menú principal y la navegación del sistema.
+ * Controlador del módulo de Inventario.
+ * Coordina la vista principal de inventario y la navegación hacia los submódulos de búsqueda y conciliación.
  */
 @Component
 public class ControlInventario {
+    private final ControlBuscarProducto controlBuscarProducto;
+    private final ControlConciliar controlConciliar;
+    private final ControlRegistroProducto controlRegistroProducto;
+    private final VentaController ventaController;
+    private final VentanaInventario ventana;
 
-	private final ControlProductos controlProductos;
-	private final ControlRegistroProducto controlRegistroProducto;
-	private final VentaController ventaController;
-	private final VistaInventario vistaInventario;
+    @Autowired
+    public ControlInventario(
+            ControlBuscarProducto controlBuscarProducto,
+            ControlConciliar controlConciliar,
+            ControlRegistroProducto controlRegistroProducto,
+            VentaController ventaController,
+            VentanaInventario ventana) {
+        this.controlBuscarProducto = controlBuscarProducto;
+        this.controlConciliar = controlConciliar;
+        this.controlRegistroProducto = controlRegistroProducto;
+        this.ventaController = ventaController;
+        this.ventana = ventana;
+    }
 
-	@Autowired
-	public ControlInventario(ControlProductos controlProductos,
-			ControlRegistroProducto controlRegistroProducto,
-			VentaController ventaController,
-			VistaInventario vistaInventario) {
-		this.controlProductos = controlProductos;
-		this.controlRegistroProducto = controlRegistroProducto;
-		this.ventaController = ventaController;
-		this.vistaInventario = vistaInventario;
-	}
+    /**
+     * Conecta este controlador con su correspondiente ventana tras instanciar el componente.
+     */
+    @PostConstruct
+    public void init() {
+        ventana.setControl(this);
+    }
 
-	@PostConstruct
-	public void init() {
-		vistaInventario.setControlInventario(this);
-	}
+    /**
+     * Muestra la ventana de inventario al usuario.
+     */
+    public void inicia() {
+        ventana.mostrarInventario();
+    }
 
-	public void inicia() {
-		vistaInventario.mostrarInventario();
-	}
+    /**
+     * Solicita la apertura de la funcionalidad de búsqueda de productos.
+     */
+    public void solicitarProductos() {
+        controlBuscarProducto.iniciarProductos();
+    }
 
-	public void solicitarProductos() {
-		controlProductos.iniciarProductos();
-	}
+    /**
+     * Solicita la apertura de la funcionalidad de conciliación de órdenes.
+     */
+    public void solicitarConciliacion() {
+        controlConciliar.iniciaConciliarOrden();
+    }
 
-	public void solicitarRegistrarProducto() {
-		controlRegistroProducto.inicia();
-	}
+    /**
+     * Solicita la apertura del formulario de registro aportado por el repositorio remoto.
+     */
+    public void solicitarRegistroProducto() {
+        controlRegistroProducto.inicia();
+    }
 
-	public void solicitarPuntoVenta() {
-		ventaController.inicia();
-	}
+    /**
+     * Solicita la apertura del punto de venta aportado por el repositorio remoto.
+     */
+    public void solicitarPuntoVenta() {
+        ventaController.inicia();
+    }
 }

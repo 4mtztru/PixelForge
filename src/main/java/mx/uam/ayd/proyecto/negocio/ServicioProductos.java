@@ -64,18 +64,30 @@ public class ServicioProductos {
 	 * @throws IllegalArgumentException si los datos requeridos no son válidos
 	 */
 	public Producto registrarProducto(Producto producto) {
+		if (producto == null) {
+			throw new IllegalArgumentException("El producto es obligatorio.");
+		}
 		if (producto.getNombre() == null || producto.getNombre().isBlank()) {
 			throw new IllegalArgumentException("El nombre del producto es obligatorio.");
 		}
-		if (producto.getPrecio() < 0) {
-			throw new IllegalArgumentException("El precio del producto no puede ser negativo.");
+		if (producto.getCategoria() == null) {
+			throw new IllegalArgumentException("La categoría del producto es obligatoria.");
 		}
-		if (producto.getStockActual() < 0) {
-			throw new IllegalArgumentException("El stock inicial no puede ser negativo.");
+		if (producto.getProveedor() == null) {
+			throw new IllegalArgumentException("El proveedor del producto es obligatorio.");
+		}
+		if (producto.getPrecioCompra() < 0) {
+			throw new IllegalArgumentException("El precio de compra no puede ser negativo.");
+		}
+		if (producto.getPrecio() < 0) {
+			throw new IllegalArgumentException("El precio de venta no puede ser negativo.");
+		}
+		if (producto.getStockActual() < 0 || producto.getStockMinimo() < 0) {
+			throw new IllegalArgumentException("El stock no puede ser negativo.");
 		}
 
 		if (producto.getSku() == null || producto.getSku().isBlank()) {
-			int catId = producto.getCategoria() != null ? producto.getCategoria().getIdCategoria() : 1;
+			int catId = producto.getCategoria() != null ? producto.getCategoria().ordinal() + 1 : 1;
 			producto.setSku(generarCodigoUnico(catId));
 		}
 		if (producto.getCodigoBarras() == null || producto.getCodigoBarras().isBlank()) {
@@ -84,34 +96,6 @@ public class ServicioProductos {
 
 		producto.setEstadoStock(calcularEstadoStock(producto.getStockActual(), producto.getStockMinimo()));
 		return repositorioProductos.save(producto);
-	}
-
-	/**
-	 * Busca productos usando exactamente uno de los criterios disponibles.
-	 *
-	 * @param criterio campo por el cual se realizará la búsqueda
-	 * @param valor valor que se desea buscar
-	 * @return todas las coincidencias; la lista estará vacía si no hay resultados
-	 * @throws IllegalArgumentException si el criterio es nulo o el valor es nulo o vacío
-	 */
-	public List<Producto> buscarProducto(CriterioBusquedaProducto criterio, String valor) {
-		if (criterio == null) {
-			throw new IllegalArgumentException("El criterio de búsqueda no puede ser nulo");
-		}
-
-		if (valor == null || valor.isBlank()) {
-			throw new IllegalArgumentException("El valor de búsqueda no puede ser nulo o vacío");
-		}
-
-		String valorNormalizado = valor.trim();
-		List<Producto> productos = repositorioProductos.obtenerPorCriterio(criterio, valorNormalizado);
-
-		for (Producto producto : productos) {
-			producto.setEstadoStock(
-					calcularEstadoStock(producto.getStockActual(), producto.getStockMinimo()));
-		}
-
-		return productos;
 	}
 
 	/**

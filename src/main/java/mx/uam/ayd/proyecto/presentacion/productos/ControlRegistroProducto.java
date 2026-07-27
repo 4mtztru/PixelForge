@@ -1,6 +1,5 @@
 package mx.uam.ayd.proyecto.presentacion.productos;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.annotation.PostConstruct;
@@ -8,7 +7,6 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import mx.uam.ayd.proyecto.datos.CategoriaRepository;
 import mx.uam.ayd.proyecto.negocio.ServicioProductos;
 import mx.uam.ayd.proyecto.negocio.modelo.Categoria;
 import mx.uam.ayd.proyecto.negocio.modelo.Producto;
@@ -21,15 +19,12 @@ import mx.uam.ayd.proyecto.negocio.modelo.Proveedor;
 public class ControlRegistroProducto {
 
 	private final ServicioProductos servicioProductos;
-	private final CategoriaRepository categoriaRepository;
 	private final VistaRegistroProducto vistaRegistroProducto;
 
 	@Autowired
 	public ControlRegistroProducto(ServicioProductos servicioProductos,
-			CategoriaRepository categoriaRepository,
 			VistaRegistroProducto vistaRegistroProducto) {
 		this.servicioProductos = servicioProductos;
-		this.categoriaRepository = categoriaRepository;
 		this.vistaRegistroProducto = vistaRegistroProducto;
 	}
 
@@ -40,8 +35,7 @@ public class ControlRegistroProducto {
 
 	public void inicia() {
 		List<Proveedor> proveedores = servicioProductos.obtenerProveedoresActivos();
-		List<Categoria> categorias = new ArrayList<>();
-		categoriaRepository.findAll().forEach(categorias::add);
+		List<Categoria> categorias = List.of(Categoria.values());
 
 		vistaRegistroProducto.mostrarFormularioRegistro(proveedores, categorias);
 	}
@@ -60,10 +54,16 @@ public class ControlRegistroProducto {
 				vistaRegistroProducto.mostrarError("Error: Debe seleccionar una categoría.");
 				return;
 			}
-			if (precioCompra < 0 || producto.getPrecio() < 0 || producto.getStockActual() < 0) {
+			if (producto.getProveedor() == null) {
+				vistaRegistroProducto.mostrarError("Error: Debe seleccionar un proveedor.");
+				return;
+			}
+			if (precioCompra < 0 || producto.getPrecio() < 0
+					|| producto.getStockActual() < 0 || producto.getStockMinimo() < 0) {
 				vistaRegistroProducto.mostrarError("Error: Precios o stock no pueden ser valores negativos.");
 				return;
 			}
+			producto.setPrecioCompra(precioCompra);
 
 			// Validar Venta < Precio Compra
 			if (producto.getPrecio() < precioCompra && !confirmacionPrecioMenor) {

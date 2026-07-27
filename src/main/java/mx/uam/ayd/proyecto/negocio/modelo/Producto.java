@@ -14,7 +14,7 @@ public class Producto {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int idProducto;
+	private long idProducto;
 
 	private String sku;
 
@@ -24,6 +24,8 @@ public class Producto {
 
 	private double precio;
 
+	private double precioCompra;
+
 	private int stockActual;
 
 	private int stockMinimo;
@@ -31,11 +33,11 @@ public class Producto {
 	@Enumerated(EnumType.STRING)
 	private EstadoStock estadoStock;
 
-	public int getIdProducto() {
+	public long getIdProducto() {
 		return idProducto;
 	}
 
-	public void setIdProducto(int idProducto) {
+	public void setIdProducto(long idProducto) {
 		this.idProducto = idProducto;
 	}
 
@@ -71,6 +73,14 @@ public class Producto {
 		this.precio = precio;
 	}
 
+	public double getPrecioCompra() {
+		return precioCompra;
+	}
+
+	public void setPrecioCompra(double precioCompra) {
+		this.precioCompra = precioCompra;
+	}
+
 	public int getStockActual() {
 		return stockActual;
 	}
@@ -95,9 +105,12 @@ public class Producto {
 		this.estadoStock = estadoStock;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "idCategoria")
+	@Enumerated(EnumType.STRING)
 	private Categoria categoria;
+
+	@ManyToOne
+	@JoinColumn(name = "idProveedor")
+	private Proveedor proveedor;
 
 	public Categoria getCategoria() {
 		return categoria;
@@ -105,5 +118,21 @@ public class Producto {
 
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
+	}
+
+	public Proveedor getProveedor() {
+		return proveedor;
+	}
+
+	public void setProveedor(Proveedor proveedor) {
+		this.proveedor = proveedor;
+	}
+
+	public String getNombreCategoria() {
+		if (categoria != null) {
+			return categoria.getNombre();
+		} else {
+			return "Sin categoría";
+		}
 	}
 }

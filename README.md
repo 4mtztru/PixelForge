@@ -1,120 +1,44 @@
-# Proyecto Análisis y Diseño
+# PixelForge
 
-Este proyecto es una aplicación JavaFX con Spring Boot para el curso de Analisis y Diseño.
+Aplicación de escritorio JavaFX con Spring Boot, JPA y H2 enfocada exclusivamente en cuatro historias de usuario:
 
-## Tecnologías Utilizadas
+- **HU-01 — Buscar producto:** consulta por nombre, SKU o código de barras y cálculo del estado de stock.
+- **HU-04 — Registrar producto:** captura de categoría, proveedor, precios y existencias; genera un código único y valida los datos antes de guardar.
+- **HU-09 — Procesar venta:** valida carrito y método de pago, registra la venta y descuenta el inventario.
+- **HU-10 — Conciliar orden:** consulta órdenes entregadas, registra cantidades recibidas, calcula diferencias y actualiza inventario y estado de la orden.
 
-- **Spring Boot 3.2.12** - Framework de aplicación
-- **Java 17** - Lenguaje de programación
-- **JavaFX 21.0.2** - Framework de interfaz gráfica
-- **Spring Data JPA** - Persistencia de datos
-- **H2 Database** - Base de datos en memoria
-- **Maven** - Gestión de dependencias
-- **JUnit 5** - Framework de pruebas
-- **TestFX** - Pruebas de interfaz gráfica
+## Requisitos
 
-## Requisitos del Sistema
+- JDK 17 o superior
+- Maven 3.6 o el wrapper incluido
 
-- **Java 17 o superior** (JDK 17+)
-- **Maven 3.6+**
-
-## Instalación y Configuración
-
-### 1. Verificar Java
-```bash
-java -version
-```
-Asegúrate de tener Java 17 o superior instalado.
-
-### 2. Clonar el repositorio
-```bash
-git clone <url-del-repositorio>
-cd AnalysisYDiseno
-```
-
-### 3. Compilar el proyecto
-```bash
-mvn clean compile
-```
-
-### 4. Ejecutar la aplicación
-```bash
-mvn javafx:run
-```
-
-O alternativamente:
-```bash
-mvn spring-boot:run
-```
-
-## Estructura del Proyecto
-
-```
-src/
-├── main/
-│   ├── java/mx/uam/ayd/proyecto/
-│   │   ├── datos/           # Capa de datos (Repositorios)
-│   │   ├── negocio/         # Capa de negocio (Servicios y Modelos)
-│   │   ├── presentacion/    # Capa de presentación (JavaFX)
-│   │   └── ProyectoApplication.java
-│   └── resources/
-│       └── application.yml  # Configuración de la aplicación
-└── test/
-    ├── java/                # Pruebas unitarias e integración
-    └── resources/
-        └── application-test.properties
-```
-
-## Funcionalidades
-
-- **Listar Usuarios**: Ver todos los usuarios registrados
-
-## Ejecutar Pruebas
+## Ejecutar
 
 ```bash
-# Ejecutar todas las pruebas
-mvn test
-
-# Ejecutar pruebas con cobertura
-mvn jacoco:report
+./mvnw spring-boot:run
 ```
 
-## Configuración de Base de Datos
+## Probar
 
-La aplicación utiliza H2 Database en memoria por defecto. La consola H2 está habilitada en:
-- **URL**: http://localhost:8080/h2-console
-- **JDBC URL**: jdbc:h2:mem:testdb
-- **Usuario**: sa
-- **Contraseña**: (vacía)
+```bash
+./mvnw test
+```
 
-## Migración de Spring Boot 2.x a 3.x
+## Estructura funcional
 
-Este proyecto ha sido migrado de Spring Boot 2.7.3 a 3.2.12. Los principales cambios incluyen:
+```text
+src/main/java/mx/uam/ayd/proyecto/
+├── datos/                 Repositorios de productos, proveedores, ventas,
+│                          órdenes y conciliaciones
+├── negocio/               Servicios de HU-01, HU-04, HU-09 y HU-10
+│   └── modelo/            Entidades y enumeraciones requeridas
+└── presentacion/
+    ├── buscarProducto/    HU-01
+    ├── productos/         HU-04
+    ├── VentaController    HU-09
+    ├── conciliar/         HU-10
+    ├── inventario/        Navegación a las cuatro historias
+    └── principal/         Entrada de la aplicación
+```
 
-### Cambios Realizados:
-1. **Actualización de Spring Boot**: 2.7.3 → 3.2.12
-2. **Actualización de Java**: 11 → 17
-3. **Actualización de JavaFX**: 17.0.2 → 21.0.2
-4. **Migración de JPA**: `javax.persistence` → `jakarta.persistence`
-5. **Actualización de dependencias de prueba**
-
-### Beneficios de la Migración:
-- Mejor rendimiento y estabilidad
-- Soporte para características modernas de Java
-- Mejoras de seguridad
-- Soporte extendido hasta 2025
-
-## Desarrollo
-
-### Agregar nuevas funcionalidades:
-1. Crear el modelo en `negocio/modelo/`
-2. Crear el repositorio en `datos/`
-3. Crear el servicio en `negocio/`
-4. Crear la interfaz en `presentacion/`
-5. Agregar pruebas en `test/`
-
-## Licencia
-
-Este proyecto es parte del curso de Análisis y Diseño de Software.
-
-Contactar a Humberto Cervantes de la UAM Iztapalapa en hcm@xanum.uam.mx
+Los diagramas de secuencia vigentes están en `docs/HU-01`, `docs/HU-04`, `docs/HU-09` y `docs/HU-10`.

@@ -1,9 +1,12 @@
 package mx.uam.ayd.proyecto.negocio;
 
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import mx.uam.ayd.proyecto.datos.RepositorioProductos;
 import mx.uam.ayd.proyecto.datos.VentaRepository;
@@ -11,7 +14,7 @@ import mx.uam.ayd.proyecto.negocio.modelo.Producto;
 import mx.uam.ayd.proyecto.negocio.modelo.Venta;
 
 /**
- * Servicio de negocio para el procesamiento y registro de ventas (HU-03).
+ * Servicio de negocio para el procesamiento y registro de ventas (HU-09).
  */
 @Service
 public class VentaService {
@@ -56,6 +59,9 @@ public class VentaService {
      * @throws IllegalArgumentException si los datos del pago no cumplen las reglas de negocio
      */
     public boolean procesarPago(Venta venta) {
+        if (venta == null) {
+            throw new IllegalArgumentException("Los datos de la venta son obligatorios.");
+        }
         if (!venta.isProductosEnCarrito()) {
             throw new IllegalArgumentException("El carrito está vacío");
         }
@@ -74,6 +80,8 @@ public class VentaService {
             if (venta.getReferenciaTransferencia() == null || venta.getReferenciaTransferencia().trim().isEmpty()) {
                 throw new IllegalArgumentException("La referencia bancaria es obligatoria.");
             }
+        } else {
+            throw new IllegalArgumentException("El método de pago no es válido.");
         }
 
         return true;
@@ -86,12 +94,31 @@ public class VentaService {
      * @param productos productos vendidos a descontar del inventario
      * @return Venta guardada
      */
+    @Transactional
     public Venta registrarVenta(Venta venta, List<Producto> productos) {
+        if (venta == null) {
+            throw new IllegalArgumentException("Los datos de la venta son obligatorios.");
+        }
+        validarCarrito(productos);
+        Map<Producto, Integer> cantidades = new IdentityHashMap<>();
+        for (Producto producto : productos) {
+            if (producto == null) {
+                throw new IllegalArgumentException("No hay inventario suficiente para completar la venta.");
+            }
+            cantidades.merge(producto, 1, Integer::sum);
+        }
+        for (Map.Entry<Producto, Integer> partida : cantidades.entrySet()) {
+            if (partida.getValue() > partida.getKey().getStockActual()) {
+                throw new IllegalArgumentException("No hay inventario suficiente para completar la venta.");
+            }
+        }
+
         Venta ventaGuardada = (ventaRepository != null) ? ventaRepository.save(venta) : venta;
 
-        if (productos != null && repositorioProductos != null) {
-            for (Producto prod : productos) {
-                int nuevoStock = Math.max(0, prod.getStockActual() - 1);
+        if (repositorioProductos != null) {
+            for (Map.Entry<Producto, Integer> partida : cantidades.entrySet()) {
+                Producto prod = partida.getKey();
+                int nuevoStock = prod.getStockActual() - partida.getValue();
                 prod.setStockActual(nuevoStock);
                 if (servicioProductos != null) {
                     prod.setEstadoStock(servicioProductos.calcularEstadoStock(nuevoStock, prod.getStockMinimo()));

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      spacing="15" style="-fx-padding: 20px;">
+
+    <Label text="Gestión de Inventario" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+    <Label text="Seleccione una opción:" style="-fx-font-size: 14px;"/>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Button text="Buscar Producto" onAction="#handleBuscarProducto" 
+                style="-fx-min-width: 180px; -fx-min-height: 35px; -fx-font-size: 14px;"/>
+        <Button text="Conciliar" onAction="#handleConciliar" 
+                style="-fx-min-width: 180px; -fx-min-height: 35px; -fx-font-size: 14px;"/>
+    </HBox>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Button text="Registrar Producto" onAction="#handleRegistrarProducto"
+                style="-fx-min-width: 180px; -fx-min-height: 35px; -fx-font-size: 14px;"/>
+        <Button text="Punto de Venta" onAction="#handlePuntoVenta"
+                style="-fx-min-width: 180px; -fx-min-height: 35px; -fx-font-size: 14px;"/>
+    </HBox>
+
+    <HBox alignment="CENTER_RIGHT" style="-fx-padding: 20px 0 0 0;">
+        <Button text="Cerrar" onAction="#handleCerrar" style="-fx-min-width: 100px;"/>
+    </HBox>
+
+</VBox>

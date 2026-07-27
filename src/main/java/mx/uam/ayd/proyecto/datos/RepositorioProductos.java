@@ -1,35 +1,31 @@
 package mx.uam.ayd.proyecto.datos;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.data.repository.CrudRepository;
 
-import mx.uam.ayd.proyecto.negocio.CriterioBusquedaProducto;
 import mx.uam.ayd.proyecto.negocio.modelo.Producto;
 
 /**
- * Repositorio de productos utilizado por HU-01.
+ * Repositorio para Productos
  */
-public interface RepositorioProductos extends CrudRepository<Producto, Integer> {
-
-	/**
-	 * Obtiene los productos que corresponden al criterio seleccionado.
-	 *
-	 * @param criterio criterio de búsqueda
-	 * @param valor valor normalizado que se desea localizar
-	 * @return productos que cumplen con el criterio
-	 */
-	default List<Producto> obtenerPorCriterio(CriterioBusquedaProducto criterio, String valor) {
-		return switch (criterio) {
-			case NOMBRE -> findByNombreContainingIgnoreCase(valor);
-			case SKU -> findBySkuIgnoreCase(valor);
-			case CODIGO_BARRAS -> findByCodigoBarras(valor);
-		};
-	}
+public interface RepositorioProductos extends CrudRepository<Producto, Long> {
 
 	List<Producto> findByNombreContainingIgnoreCase(String nombre);
+
+	List<Producto> findBySku(String sku);
 
 	List<Producto> findBySkuIgnoreCase(String sku);
 
 	List<Producto> findByCodigoBarras(String codigoBarras);
+
+	default List<Producto> obtenerPorCriterio(String criterio, String valor) {
+		return switch (criterio.toLowerCase(Locale.ROOT)) {
+			case "nombre" -> findByNombreContainingIgnoreCase(valor);
+			case "sku" -> findBySku(valor);
+			case "codigobarras" -> findByCodigoBarras(valor);
+			default -> throw new IllegalArgumentException("El criterio de búsqueda no es válido.");
+		};
+	}
 }

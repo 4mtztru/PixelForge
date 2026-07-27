@@ -261,7 +261,7 @@ public class VistaRegistroProducto {
 
 	private void handleGenerarCodigo() {
 		Categoria cat = comboCategoria != null ? comboCategoria.getValue() : null;
-		int catId = cat != null ? cat.getIdCategoria() : 1;
+		int catId = cat != null ? cat.ordinal() + 1 : 1;
 		String codigo = control.generarCodigo(catId);
 		if (campoCodigo != null) campoCodigo.setText(codigo);
 	}
@@ -285,6 +285,7 @@ public class VistaRegistroProducto {
 			p.setSku(campoCodigo.getText().trim());
 			p.setCodigoBarras(campoCodigo.getText().trim());
 			p.setCategoria(comboCategoria.getValue());
+			p.setProveedor(comboProveedor.getValue());
 
 			control.validarYGuardarProducto(p, precioCompra, confirmacionPrecioMenorOtorgada);
 
