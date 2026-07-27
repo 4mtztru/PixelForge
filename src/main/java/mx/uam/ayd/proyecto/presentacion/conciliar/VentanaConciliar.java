@@ -165,12 +165,24 @@ public class VentanaConciliar {
                 ? orden.getDetalles().stream().mapToInt(DetalleOrdenCompra::getCantidadEsperada).sum()
                 : 0;
 
-        Label lblEsperado = new Label("Total Esperado: " + totalEsp);
-        Label lblRecibido = new Label("Total Recibido: " + totalEsp);
-        Label lblDiscrepancia = new Label("Discrepancia: 0");
-        HBox boxResumen = new HBox(20, lblEsperado, lblRecibido, lblDiscrepancia);
+        double montoTotalOrden = orden.getMontoTotal();
+        double anticipoPagado = orden.getAnticipoPagado();
+
+        Label lblEsperado = new Label("Total Esperado: " + totalEsp + " pzs");
+        Label lblRecibido = new Label("Total Recibido: " + totalEsp + " pzs");
+        Label lblDiscrepancia = new Label("Discrepancia: 0 pzs");
+        HBox boxResumenUnidades = new HBox(20, lblEsperado, lblRecibido, lblDiscrepancia);
+
+        Label lblMontoOrden = new Label(String.format("Monto Orden: $%,.2f", montoTotalOrden));
+        Label lblAnticipo = new Label(String.format("Anticipo Pagado: $%,.2f", anticipoPagado));
+        Label lblMontoAjuste = new Label("Ajuste: $0.00");
+        Label lblMontoFinal = new Label(String.format("Monto Final a Pagar: $%,.2f", Math.max(0, montoTotalOrden - anticipoPagado)));
+        lblMontoFinal.setStyle("-fx-font-weight: bold; -fx-text-fill: #0056b3;");
+
+        HBox boxResumenFinanciero = new HBox(20, lblMontoOrden, lblAnticipo, lblMontoAjuste, lblMontoFinal);
+        VBox boxResumen = new VBox(8, boxResumenUnidades, boxResumenFinanciero);
         boxResumen.setPadding(new Insets(10));
-        boxResumen.setStyle("-fx-border-color: #cccccc; -fx-border-radius: 4px;");
+        boxResumen.setStyle("-fx-border-color: #cccccc; -fx-border-radius: 4px; -fx-background-color: #f9f9f9;");
 
         // Tabla
         VBox tabla = new VBox(5);
@@ -219,14 +231,15 @@ public class VentanaConciliar {
                 filas.add(fp);
 
                 txtRec.textProperty()
-                        .addListener((obs, o, n) -> actualizarCalculos(filas, totalEsp, lblRecibido, lblDiscrepancia));
+                        .addListener((obs, o, n) -> actualizarCalculos(filas, totalEsp, lblRecibido, lblDiscrepancia,
+                                lblMontoAjuste, lblMontoFinal, montoTotalOrden, anticipoPagado));
 
                 fila.getChildren().addAll(lblSku, lblNom, lblEsp, boxInput, lblDif, lblEst);
                 tabla.getChildren().add(fila);
             }
         }
 
-        actualizarCalculos(filas, totalEsp, lblRecibido, lblDiscrepancia);
+        actualizarCalculos(filas, totalEsp, lblRecibido, lblDiscrepancia, lblMontoAjuste, lblMontoFinal, montoTotalOrden, anticipoPagado);
 
         btnVolver.setOnAction(e -> mostrarVistaLista());
         btnConfirmar.setOnAction(e -> {
@@ -276,13 +289,21 @@ public class VentanaConciliar {
         return l;
     }
 
-    private void actualizarCalculos(List<FilaPartida> filas, int totalEsp, Label lblRec, Label lblDisc) {
+    private void actualizarCalculos(List<FilaPartida> filas, int totalEsp, Label lblRec, Label lblDisc,
+            Label lblMontoAjuste, Label lblMontoFinal, double montoTotalOrden, double anticipoPagado) {
         int totalRec = 0;
+        double montoAjusteTotal = 0.0;
+
         for (FilaPartida fp : filas) {
             int rec = fp.getCantidadRecibida();
             int esp = fp.detalle.getCantidadEsperada();
             int dif = rec - esp;
             totalRec += rec;
+
+            double precioUnitario = fp.detalle.getPrecioUnitario();
+            double ajustePartida = dif * precioUnitario;
+            montoAjusteTotal += ajustePartida;
+
             fp.lblDif.setText(String.valueOf(dif));
             if (dif == 0) {
                 fp.lblEst.setText("COINCIDE");
@@ -295,13 +316,31 @@ public class VentanaConciliar {
                 fp.lblEst.setStyle("-fx-font-weight: bold; -fx-text-fill: red;");
             }
         }
+
         int difTotal = totalRec - totalEsp;
-        lblRec.setText("Total Recibido: " + totalRec);
-        lblDisc.setText("Discrepancia: " + difTotal);
+        lblRec.setText("Total Recibido: " + totalRec + " pzs");
+        lblDisc.setText("Discrepancia: " + difTotal + " pzs");
         if (difTotal == 0) {
             lblDisc.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
         } else {
             lblDisc.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+        }
+
+        if (lblMontoAjuste != null) {
+            lblMontoAjuste.setText(String.format("Ajuste: $%,.2f", montoAjusteTotal));
+            if (montoAjusteTotal == 0) {
+                lblMontoAjuste.setStyle("-fx-font-weight: bold;");
+            } else if (montoAjusteTotal < 0) {
+                lblMontoAjuste.setStyle("-fx-font-weight: bold; -fx-text-fill: red;");
+            } else {
+                lblMontoAjuste.setStyle("-fx-font-weight: bold; -fx-text-fill: green;");
+            }
+        }
+
+        if (lblMontoFinal != null) {
+            double montoFinal = Math.max(0, montoTotalOrden + montoAjusteTotal - anticipoPagado);
+            lblMontoFinal.setText(String.format("Monto Final a Pagar: $%,.2f", montoFinal));
+            lblMontoFinal.setStyle("-fx-font-weight: bold; -fx-text-fill: #0056b3;");
         }
     }
 
